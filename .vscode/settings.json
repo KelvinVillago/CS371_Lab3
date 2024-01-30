@@ -51,5 +51,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Lab 3.sln"
+    "dotnet.defaultSolution": "CS371_Lab3.sln"
 }
