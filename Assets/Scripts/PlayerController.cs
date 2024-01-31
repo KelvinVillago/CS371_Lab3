@@ -9,9 +9,16 @@ public class PlayerController : MonoBehaviour
     PlayerInput _playerInput;
     InputAction _moveAction;
     InputAction _interaction;
+    Rigidbody _rigidbody;
+
+    //changeable fields
     [SerializeField] float speed;
     [SerializeField] float boundary;
-    Rigidbody _rigidbody;
+
+    //Camera components for relative movement
+    public Transform camera;
+    float cameraY;
+    
 
     void Awake()
     {
@@ -35,9 +42,21 @@ public class PlayerController : MonoBehaviour
     {
         Vector2 moveVector =_moveAction.ReadValue<Vector2>();
 
+        //camera relative movement
+        Vector3 cameraFwd = camera.forward;
+        Vector3 cameraRight = camera.right;
+
+        cameraFwd.y = 0;
+        cameraRight.y = 0;
+
+        Vector3 forwardRelative = moveVector.y * cameraFwd;
+        Vector3 rightRelative = moveVector.x * cameraRight;
+
+        Vector3 moveDir = forwardRelative + rightRelative;
+
         float moveSpeed = speed * Time.fixedDeltaTime;
-        float boundedZ = Mathf.Clamp(transform.position.z + moveVector.y*speed, -boundary, boundary);
-        float boundedX = Mathf.Clamp(transform.position.x + moveVector.x*speed, -boundary, boundary);
+        float boundedZ = Mathf.Clamp(transform.position.z + moveDir.z*speed, -boundary, boundary);
+        float boundedX = Mathf.Clamp(transform.position.x + moveDir.x*speed, -boundary, boundary);
 
         Vector3 movement = new Vector3(boundedX, transform.position.y, boundedZ);
 

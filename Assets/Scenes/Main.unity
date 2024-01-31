@@ -690,7 +690,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 4
   m_CollisionDetection: 0
 --- !u!114 &247881031
 MonoBehaviour:
@@ -704,8 +704,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 981667aed7417ca4898b2199d51bf8f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 0.75
   boundary: 8
+  camera: {fileID: 963194228}
 --- !u!23 &247881033
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1090,7 +1091,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1285339147}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 60, y: 90, z: 0}
 --- !u!1 &1237657761
 GameObject:
@@ -1240,8 +1241,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 963194228}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1285339148
@@ -1264,6 +1264,7 @@ MonoBehaviour:
   - {fileID: 2598248390028287519, guid: d2d88dc0946e2ab43b73b7a19ebf1f14, type: 3}
   - {fileID: 2957692469548575805, guid: 987d57bcb5a7e314db28ec8b00bcb8fc, type: 3}
   - {fileID: 7877773385419770710, guid: d7ee61e390985c04a906aa6470c8f707, type: 3}
+  player: {fileID: 247881029}
 --- !u!1 &1549676063
 GameObject:
   m_ObjectHideFlags: 0
@@ -1378,4 +1379,5 @@ SceneRoots:
   - {fileID: 23553870}
   - {fileID: 2068690364}
   - {fileID: 247881035}
+  - {fileID: 963194228}
   - {fileID: 1285339147}
