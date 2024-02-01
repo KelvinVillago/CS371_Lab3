@@ -1,26 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using TMPro;
+
 
 public class GameManager : MonoBehaviour
 {
     public GameObject[] gameObjects;
     string[] tags = {"first", "second", "third", "fourth", "fifth", "sixth", "seventh"};
+    
+    //references
     public static GameManager instance;
-
     public GameObject player;
+    
+    [SerializeField] GameObject RestartUI;
+    [SerializeField] TextMeshProUGUI scoreText;
+
     bool hasObject = false;
+    int _score = 0;
+
+    //spawning new objects
     bool flag = false;
     Vector3 spawnPosition;
     GameObject newObject;
     Rigidbody objectRB;
     Collider objectCollider;
+
+    //combination variables
     string combineTag;
     Vector3 combinePos;
 
     void Awake()
     {
         instance = this;
+        RestartUI.SetActive(false);
     }
     
     void Start() => StartCoroutine(SpawnObject());  
@@ -33,8 +47,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void DropObject(){
-        // print("Dropped");
+    public void DropObject()
+    {
         if(newObject != null){
             FollowScript follow = newObject.GetComponent<FollowScript>();
             follow.enabled = false;
@@ -48,10 +62,10 @@ public class GameManager : MonoBehaviour
         hasObject = false;
     }
 
-    public void Combine(string tag, Vector3 location){
+    public void Combine(string tag, Vector3 location)
+    {
         StopCoroutine(SpawnObject());
         int ind = 0;
-        print("Received: " + location);
         for(int i = 0; i < tags.Length; i++){
             if(tags[i] == tag){
                 ind = i;
@@ -63,16 +77,24 @@ public class GameManager : MonoBehaviour
             combinedObj.transform.position = location;
             FollowScript newObjFollow = combinedObj.GetComponent<FollowScript>();
             newObjFollow.enabled = false;
-            
-            print("Create");
         }
+        _score += (ind + 1) * 100;
+        scoreText.text = "Score: " + _score.ToString();
+
         StartCoroutine(SpawnObject());
     }
 
-    public void setFlag(string tag, Vector3 location){
+    public void setFlag(string tag, Vector3 location)
+    {
         flag = true;
         combineTag = tag;
         combinePos = location;
+    }
+
+    public void EndGame()
+    {
+        Time.timeScale = 0;
+        RestartUI.SetActive(true);
     }
 
     IEnumerator SpawnObject()

@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class BallScript : MonoBehaviour
 {
-
+    float _counter;
     string selfTag;
+    [SerializeField] float _timerAmt;
     void Start()
     {
         selfTag = gameObject.tag;
@@ -18,7 +19,19 @@ public class BallScript : MonoBehaviour
             Destroy(gameObject);
             Destroy(collisionInfo.gameObject);
             GameManager.instance.setFlag(selfTag, placement);
-            print("Self: "+placement);
         }
+    }
+
+    void OnTriggerStay(Collider other)
+    {
+        _counter += Time.deltaTime;
+        if(_counter > _timerAmt){
+            GameManager.instance.EndGame();
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        _counter = 0;
     }
 }
