@@ -17,11 +17,8 @@ public class BallScript : MonoBehaviour
             Vector3 placement = gameObject.transform.position;
             Destroy(gameObject);
             Destroy(collisionInfo.gameObject);
-            GameManager.instance.Combine(selfTag, placement);
+            GameManager.instance.setFlag(selfTag, placement);
             print("Self: "+placement);
-        }
-        else if(collisionInfo.gameObject.tag == "Untagged"){
-            this.enabled = false;
         }
     }
 }

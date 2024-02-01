@@ -10,10 +10,13 @@ public class GameManager : MonoBehaviour
 
     public GameObject player;
     bool hasObject = false;
+    bool flag = false;
     Vector3 spawnPosition;
     GameObject newObject;
     Rigidbody objectRB;
     Collider objectCollider;
+    string combineTag;
+    Vector3 combinePos;
 
     void Awake()
     {
@@ -21,6 +24,14 @@ public class GameManager : MonoBehaviour
     }
     
     void Start() => StartCoroutine(SpawnObject());  
+
+    void Update()
+    {
+        if(flag){
+            Combine(combineTag, combinePos);
+            flag = false;
+        }
+    }
 
     public void DropObject(){
         // print("Dropped");
@@ -47,7 +58,7 @@ public class GameManager : MonoBehaviour
                 break;
             }
         }
-        if(ind < tags.Length - 1){
+        if(ind < tags.Length - 1 && flag == true){
             GameObject combinedObj = Instantiate(gameObjects[ind+1], location, Quaternion.identity);
             combinedObj.transform.position = location;
             FollowScript newObjFollow = combinedObj.GetComponent<FollowScript>();
@@ -56,7 +67,12 @@ public class GameManager : MonoBehaviour
             print("Create");
         }
         StartCoroutine(SpawnObject());
+    }
 
+    public void setFlag(string tag, Vector3 location){
+        flag = true;
+        combineTag = tag;
+        combinePos = location;
     }
 
     IEnumerator SpawnObject()
