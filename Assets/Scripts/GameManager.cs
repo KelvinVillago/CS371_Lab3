@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System;
+using Random=UnityEngine.Random;
 
 
 public class GameManager : MonoBehaviour
@@ -16,9 +18,11 @@ public class GameManager : MonoBehaviour
     
     [SerializeField] GameObject RestartUI;
     [SerializeField] TextMeshProUGUI scoreText;
+    [SerializeField] TextMeshProUGUI _highScoresText;
 
     bool hasObject = false;
-    int _score = 0;
+    int _score;
+    int[] _highScores = {0,0,0};
 
     //spawning new objects
     bool flag = false;
@@ -33,11 +37,25 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        instance = this;
+        if(instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         RestartUI.SetActive(false);
+        _score = 0;
     }
     
-    void Start() => StartCoroutine(SpawnObject());  
+    void Start()
+    {        
+        _highScoresText.text = "1: " + _highScores[0] + "\n" + "2: " + _highScores[1] + "\n" + "3: " + _highScores[2] + "\n";
+        StartCoroutine(SpawnObject());  
+    }
 
     void Update()
     {
@@ -93,6 +111,14 @@ public class GameManager : MonoBehaviour
 
     public void EndGame()
     {
+        for(int i = 0; i < _highScores.Length; i++){
+            if(_score > _highScores[i]){
+                _highScores[i] = _score;
+                break;
+            }
+        }
+        Array.Sort(_highScores);
+
         Time.timeScale = 0;
         RestartUI.SetActive(true);
     }
@@ -106,7 +132,9 @@ public class GameManager : MonoBehaviour
                 int choice = Random.Range(0,4);
                 
                 spawnPosition = player.transform.position + new Vector3(0,5,0);
+                print("Spawn pos: " + spawnPosition);
                 newObject = Instantiate(gameObjects[choice], spawnPosition, Quaternion.identity, player.transform);
+                newObject.transform.localPosition = new Vector3(0,5,0);
 
                 objectRB = newObject.GetComponent<Rigidbody>();
                 objectRB.useGravity = false;

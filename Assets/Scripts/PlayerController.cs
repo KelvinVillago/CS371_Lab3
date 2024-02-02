@@ -16,10 +16,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float boundary;
 
     //Camera components for relative movement
-    public Transform camera;
     float cameraY;
     
-
     void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
@@ -34,17 +32,13 @@ public class PlayerController : MonoBehaviour
         _interaction.started += Action;
     }
 
-    void Update(){
-
-    }
-
     void FixedUpdate()
     {
         Vector2 moveVector =_moveAction.ReadValue<Vector2>();
 
         //camera relative movement
-        Vector3 cameraFwd = camera.forward;
-        Vector3 cameraRight = camera.right;
+        Vector3 cameraFwd = Camera.main.transform.forward;
+        Vector3 cameraRight = Camera.main.transform.right;
 
         cameraFwd.y = 0;
         cameraRight.y = 0;
