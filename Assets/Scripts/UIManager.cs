@@ -17,6 +17,8 @@ public class UIManager : MonoBehaviour
 
     public void Play()
     {
+        Time.timeScale = 1f;
+        _isPaused = false;
         SceneManager.LoadScene("Main");
     }
 
