@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
     
     PlayerInput _playerInput;
     InputAction _rotationAction;
+    InputAction _resetCam;
+    
     
     //references
     public static GameManager instance;
@@ -59,10 +61,10 @@ public class GameManager : MonoBehaviour
         }
 
         RestartUI.SetActive(false);
-        _score = 0;
         
         _playerInput = GetComponent<PlayerInput>();
         _rotationAction = _playerInput.actions["Rotation"];
+        _resetCam = _playerInput.actions["ResetCamera"];
         
         _audioSource = GetComponent<AudioSource>();
 
@@ -97,12 +99,14 @@ public class GameManager : MonoBehaviour
             _camera = gameObject.transform.GetChild(0).gameObject;
             Destroy(_camera.GetComponent<AudioListener>());
         }
+        _resetCam.started += ResetCam;
     }
     
     void Start()
     {   
         Time.timeScale = 1f;
         StartCoroutine(SpawnObject());  
+        _resetCam.started += ResetCam;
     }
 
     void Update()
@@ -117,9 +121,26 @@ public class GameManager : MonoBehaviour
             hasObject = false;
         }
 
-        float motion = _rotationAction.ReadValue<float>();
-        float _spinSpeed = motion * speed;
-        transform.Rotate(new Vector3(0,_spinSpeed,0));
+        Vector2 motion = _rotationAction.ReadValue<Vector2>();
+        float spinY = motion.x * speed;
+        float spinX = motion.y * speed;
+        float xRotation = transform.rotation.eulerAngles.x;
+        print("X rotation: " + xRotation);
+        if(xRotation > 180){
+            xRotation -= 360;
+        }
+        print("X rotation: "+xRotation);
+        if (xRotation < -60 && spinX < 0)
+        {
+            transform.Rotate(new Vector3(0,spinY,0));
+        }
+        else if(xRotation > 30 && spinX > 0)
+        {
+            transform.Rotate(new Vector3(0,spinY,0));
+        }
+        else{
+            transform.Rotate(new Vector3(spinX,spinY,0));
+        }
     }
 
     public void DropObject()
@@ -135,11 +156,11 @@ public class GameManager : MonoBehaviour
             objectCollider.enabled = true;
         }
         hasObject = false;
+        StartCoroutine(SpawnObject());
     }
 
     public void Combine(string tag, Vector3 location)
     {
-        StopCoroutine(SpawnObject());
         int ind = 0;
         _audioSource.PlayOneShot(popSound);
         for(int i = 0; i < tags.Length; i++){
@@ -159,7 +180,6 @@ public class GameManager : MonoBehaviour
         _score += (ind + 1) * 100;
         _scoreText.text = "Score: " + _score.ToString();
 
-        StartCoroutine(SpawnObject());
     }
 
     public void setFlag(string tag, Vector3 location)
@@ -183,6 +203,7 @@ public class GameManager : MonoBehaviour
         }
         Array.Sort(_highScores);
         Array.Reverse(_highScores);
+        _score = 0;
 
         Time.timeScale = 0;
         RestartUI.SetActive(true);
@@ -190,13 +211,14 @@ public class GameManager : MonoBehaviour
 
     IEnumerator SpawnObject()
     {
-        while(true)
-        {
-            yield return new WaitForSeconds(1.5f);
+        // while(true)
+        // {
+            
+            yield return new WaitForSeconds(2.0f);
             if(hasObject == false){
                 int choice = Random.Range(0,4);
                 
-                spawnPosition = player.transform.position + new Vector3(0,5,0);
+                spawnPosition = player.transform.position + new Vector3(0,10,0);
                 // print("Spawn pos: " + spawnPosition);
                 newObject = Instantiate(gameObjects[choice], spawnPosition, Quaternion.identity, player.transform);
                 newObject.transform.localPosition = new Vector3(0,5,0);
@@ -209,7 +231,7 @@ public class GameManager : MonoBehaviour
 
                 hasObject = true;
             }
-        }
+        // }
     }
 
     IEnumerator UpdateScore()
@@ -218,6 +240,11 @@ public class GameManager : MonoBehaviour
             _highScoresText.text = "1: " + _highScores[0] + "\n" + "2: " + _highScores[1] + "\n" + "3: " + _highScores[2] + "\n";
         }
         yield return null;
+    }
+
+    void ResetCam(InputAction.CallbackContext context)
+    {
+        gameObject.transform.rotation = Quaternion.Euler(0,45,0);
     }
 
 }

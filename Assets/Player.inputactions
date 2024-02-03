@@ -27,10 +27,19 @@
                     "name": "Rotation",
                     "type": "Value",
                     "id": "bcc0467e-d4d9-4b9b-a709-25177a390448",
-                    "expectedControlType": "Axis",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "ResetCamera",
+                    "type": "Button",
+                    "id": "8c598dc0-b085-4b97-95f9-f01e44c0b757",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -101,9 +110,9 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "1D Axis",
-                    "id": "f844e66d-fb9b-4e67-9de4-1697660da8ea",
-                    "path": "1DAxis",
+                    "name": "2D Vector",
+                    "id": "078d95f5-04b2-4a22-8e77-60f944144f7c",
+                    "path": "2DVector",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -112,8 +121,30 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "negative",
-                    "id": "24b1a310-9bde-45f3-b893-4cb7d38ce0ac",
+                    "name": "up",
+                    "id": "776cab5a-6a60-41f5-8281-b5e4fd5b1779",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotation",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "e60038f3-7f93-4d39-8340-ac70ee790b86",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotation",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "c0a77b87-c1f0-4268-ba1d-01a5a27b0bde",
                     "path": "<Keyboard>/leftArrow",
                     "interactions": "",
                     "processors": "",
@@ -123,8 +154,8 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "positive",
-                    "id": "03750b14-4fa9-474d-a55d-215725593c8d",
+                    "name": "right",
+                    "id": "5f19a602-77ea-41ad-9055-979df74f371f",
                     "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
@@ -132,6 +163,17 @@
                     "action": "Rotation",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "326b1d2d-4b97-46e8-84d2-800dc16beea6",
+                    "path": "<Keyboard>/backslash",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ResetCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

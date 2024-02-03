@@ -7,6 +7,6 @@ public class FollowScript : MonoBehaviour
 
     void Update()
     {
-        transform.localPosition = new Vector3(0,5,0);
+        transform.localPosition = new Vector3(0,10,0);
     }
 }
